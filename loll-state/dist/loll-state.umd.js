@@ -1,0 +1,2 @@
+!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e():"function"==typeof define&&define.amd?define(e):e()}(0,function(){var t=require("mitt");module.exports=function(e){var n=e,u="function"==typeof t?t():t.default();return Object.assign(u,{getState:function(){return n},setState:function(t,e){return n=Object.assign(n,"function"==typeof t?t(n):t),u.emit("update"),e&&setTimeout(e,0),n},connect:function(t){return function(e){return function(u){return e(u,t(n))}}}})}});
+//# sourceMappingURL=loll-state.umd.js.map
