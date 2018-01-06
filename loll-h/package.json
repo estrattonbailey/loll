@@ -1,0 +1,47 @@
+{
+  "name": "@loll/h",
+  "version": "0.0.1",
+  "description": "Universal component microlibrary.",
+  "source": "index.js",
+  "module": "dist/loll-h.es.js",
+  "main": "dist/loll-h.js",
+  "umd:main": "dist/loll-h.umd.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "size": "rollup -c && gzip-size bundle.js && rm bundle.js",
+    "build": "microbundle build",
+    "watch": "microbundle watch",
+    "publish": "npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/estrattonbailey/loll.git"
+  },
+  "keywords": [
+    "hyperscript",
+    "component",
+    "h"
+  ],
+  "author": "loll",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/estrattonbailey/loll/issues"
+  },
+  "homepage": "https://github.com/estrattonbailey/loll#readme",
+  "devDependencies": {
+    "gzip-size-cli": "^2.1.0",
+    "microbundle": "^0.2.4",
+    "rollup": "^0.53.3",
+    "rollup-plugin-babel-minify": "^3.1.2",
+    "rollup-plugin-cleanup": "^2.0.0",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-strip": "^1.1.1"
+  },
+  "dependencies": {
+    "hyperscript": "^2.0.2",
+    "hyperx": "^2.3.2"
+  }
+}
