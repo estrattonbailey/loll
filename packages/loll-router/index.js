@@ -4,6 +4,10 @@ const mitt = require('mitt')
 
 const isBrowser = typeof window !== 'undefined'
 
+function currentURL (loc = window.location) {
+  return loc.href.replace(loc.origin, '')
+}
+
 /**
  * route utils lifted and adapted from
  * dush-router by @tunnckoCore
@@ -44,7 +48,7 @@ function createRoute ([ route, handler ]) {
   }
 }
 
-function executeRoute (pathname = '/', routes, done) {
+function getRoute (pathname = '/', routes) {
   /**
    * Find first match and render
    */
@@ -61,81 +65,59 @@ function executeRoute (pathname = '/', routes, done) {
 
     return Promise.resolve(r.handler(params || {})).catch(e => console.error(e))
   }
+
+  return Promise.resolve(false)
 }
 
 module.exports = function loll (routes = []) {
-  const middleware = []
+  let rootRef
 
   routes = routes.map(createRoute)
-
-  /**
-   * This is assuming every route returns
-   * markup. If we ever want to return something
-   * else and transform it back to markup
-   * using middleware, this attr setting
-   * will need to be handled elsewhere.
-   */
-  function getRoute (location) {
-    const next = executeRoute(location, routes)
-    next.then(el => {
-      el.setAttribute('data-cuppa-root', '')
-      return el
-    })
-    return next
-  }
-
-  function use (fn) {
-    (fn && typeof fn === 'function') && middleware.push(fn)
-  }
-
-  function applyMiddleware (next) {
-    for (let fn of middleware) {
-      next = fn(next)
-    }
-
-    return next
-  }
 
   function mount (root, store, done) {
     const ev = typeof mitt === 'function' ? mitt() : mitt.default()
 
-    function write (path, next, force) {
-      next = applyMiddleware(next)
-
+    function write (path, next, quiet) {
       window.requestAnimationFrame(() => {
-        const prev = document.querySelector('[data-cuppa-root]')
-        prev ? force ? root.replaceChild(next, prev) : morph(prev, next) : root.appendChild(next)
+        if (rootRef) {
+          morph(rootRef, next)
+        } else {
+          root.appendChild(next)
+          rootRef = root.children[0]
+        }
         window.history.pushState({}, document.title, path)
-        !force && ev.emit('render', next)
+        !quiet && ev.emit('render', next)
       })
     }
 
-    function go (pathname, force) {
-      return getRoute(pathname).then(next => (
-        write(pathname, next, force)
+    function go (pathname, quiet) {
+      return getRoute(pathname, routes).then(next => (
+        write(pathname, next, quiet)
       ))
     }
 
-    href(({ pathname }) => {
-      ev.emit('navigate', pathname)
-      go(pathname)
+    href(location => {
+      const loc = currentURL(location)
+      ev.emit('navigate', loc)
+      go(loc)
     })
 
     window.onpopstate = function onPopState (e) {
-      const path = e.target.location.pathname
+      const path = currentURL(e.target.location)
       go(path)
     }
 
-    go(window.location.pathname, true).then(() => done && done())
+    go(currentURL(), true).then(() => done && done())
 
     return Object.assign(ev, {
-      use,
-      go
+      render (url = currentURL(), quiet) {
+        go(url, quiet)
+      }
     })
   }
 
   function renderToString (location) {
-    return getRoute(location)
+    return getRoute(location, routes)
       .then(markup => markup.outerHTML)
   }
 

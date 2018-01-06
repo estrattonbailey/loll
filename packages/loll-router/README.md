@@ -1,5 +1,5 @@
 # @loll/router
-Library agnostic routing and DOM diffing. **2.4kb gzipped.**
+Library agnostic routing and DOM diffing.
 
 ## Configure Routes
 The main `router` exports accepts an `array` of routes, represented by an `array` with the shape `[route, handler]`.
@@ -51,6 +51,18 @@ module.exports = router([
   }]
 ])
 ```
+Configure a wildcard route to catch any routes that don't match, and show a 404:
+```javascript
+// router.js
+const router = require('@loll/router')
+
+module.exports = router([
+  // route, route, route,...
+  ['*', () => {
+    return h`<h1>404</h1>`
+  }]
+])
+```
 
 ## Mounting to the DOM
 The export of `./router.js` returns a function to mount the router to the DOM. Pass it a DOM node to mount the router. Once mounted, the router will listen for link clicks via [nanohref](https://github.com/choojs/nanohref) and handle routing according to your config.
@@ -82,16 +94,25 @@ app.on('render', () => {})
 ```
 
 ## Methods
-### `go(route)`
-Navigate to a given route:
+### `render(route)`
+Navigate to a given route. If no route is provided, it simply re-renders the page in it's current state. Use this method to re-render after a state change.
 ```javascript
 const app = require('./app.js')
 
-app.go('/about')
+app.render('/about') // navigate and render route /about
+
+app.render() // re-render
+```
+### `on(event, callback)`
+Subscribe to an event.
+```javascript
+const app = require('./app.js')
+
+app.on('render', () => {})
 ```
 
 ### Usage with State Management
-Usage with state management is simple, provided the store implements a callback when the store is updated. Below is an example with [@loll/state](https://www.npmjs.com/package/@loll/state).
+Usage with state management is simple, provided the store implements a callback when the store is updated. Below is an example with [@loll/state](https://github.com/estrattonbailey/loll/tree/master/packages/loll-state).
 ```javascript
 const app = require('./app.js')
 const createStore = require('@loll/state')
@@ -101,9 +122,7 @@ const store = createStore({
   bar: true
 })
 
-store.on('update', () => {
-  app.go(window.location.pathname) // render existing route again
-})
+store.on('update', () => app.render())
 ```
 
 ## Server Side Rendering

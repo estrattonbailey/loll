@@ -1,5 +1,5 @@
 # @loll/state
-Library agnostic state management. **369bytes gzipped.**
+Library agnostic state management.
 
 ## Install
 ```bash

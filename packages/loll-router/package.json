@@ -1,6 +1,6 @@
 {
   "name": "@loll/router",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Library agnostic routing.",
   "source": "index.js",
   "module": "dist/loll-router.es.js",

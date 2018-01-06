@@ -2,6 +2,12 @@ var href = require('nanohref');
 var morph = require('nanomorph');
 var mitt = require('mitt');
 var isBrowser = typeof window !== 'undefined';
+function currentURL(loc) {
+    if ( loc === void 0 ) loc = window.location;
+
+    return loc.href.replace(loc.origin, '');
+}
+
 function collectParams(r, pathname) {
     var match = null;
     pathname.replace(r.regex, function () {
@@ -41,7 +47,7 @@ function createRoute(ref) {
     };
 }
 
-function executeRoute(pathname, routes, done) {
+function getRoute(pathname, routes) {
     if ( pathname === void 0 ) pathname = '/';
 
     for (var i = 0, list = routes; i < list.length; i += 1) {
@@ -52,70 +58,54 @@ function executeRoute(pathname, routes, done) {
             { continue; }
         return Promise.resolve(r.handler(params || {})).catch(function (e) { return console.error(e); });
     }
+    return Promise.resolve(false);
 }
 
 module.exports = function loll(routes) {
     if ( routes === void 0 ) routes = [];
 
-    var middleware = [];
+    var rootRef;
     routes = routes.map(createRoute);
-    function getRoute(location) {
-        var next = executeRoute(location, routes);
-        next.then(function (el) {
-            el.setAttribute('data-cuppa-root', '');
-            return el;
-        });
-        return next;
-    }
-    
-    function use(fn) {
-        fn && typeof fn === 'function' && middleware.push(fn);
-    }
-    
-    function applyMiddleware(next) {
-        for (var i = 0, list = middleware; i < list.length; i += 1) {
-            var fn = list[i];
-
-            next = fn(next);
-        }
-        return next;
-    }
-    
     function mount(root, store, done) {
         var ev = typeof mitt === 'function' ? mitt() : mitt.default();
-        function write(path, next, force) {
-            next = applyMiddleware(next);
+        function write(path, next, quiet) {
             window.requestAnimationFrame(function () {
-                var prev = document.querySelector('[data-cuppa-root]');
-                prev ? force ? root.replaceChild(next, prev) : morph(prev, next) : root.appendChild(next);
+                if (rootRef) {
+                    morph(rootRef, next);
+                } else {
+                    root.appendChild(next);
+                    rootRef = root.children[0];
+                }
                 window.history.pushState({}, document.title, path);
-                !force && ev.emit('render', next);
+                !quiet && ev.emit('render', next);
             });
         }
         
-        function go(pathname, force) {
-            return getRoute(pathname).then(function (next) { return write(pathname, next, force); });
+        function go(pathname, quiet) {
+            return getRoute(pathname, routes).then(function (next) { return write(pathname, next, quiet); });
         }
         
-        href(function (ref) {
-            var pathname = ref.pathname;
-
-            ev.emit('navigate', pathname);
-            go(pathname);
+        href(function (location) {
+            var loc = currentURL(location);
+            ev.emit('navigate', loc);
+            go(loc);
         });
         window.onpopstate = function onPopState(e) {
-            var path = e.target.location.pathname;
+            var path = currentURL(e.target.location);
             go(path);
         };
-        go(window.location.pathname, true).then(function () { return done && done(); });
+        go(currentURL(), true).then(function () { return done && done(); });
         return Object.assign(ev, {
-            use: use,
-            go: go
+            render: function render(url, quiet) {
+                if ( url === void 0 ) url = currentURL();
+
+                go(url, quiet);
+            }
         });
     }
     
     function renderToString(location) {
-        return getRoute(location).then(function (markup) { return markup.outerHTML; });
+        return getRoute(location, routes).then(function (markup) { return markup.outerHTML; });
     }
     
     return isBrowser ? mount : renderToString;
