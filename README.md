@@ -7,6 +7,7 @@ A fun little frontend application framework.
 3. Global and/or local state
 4. Fast DOM diffing using real DOM nodes
 5. Easy server-side rendering
+6. Tiny: 1.7kb gzipped, 10.6kb gzipped with dependencies
 
 ## Usage
 The libraries herein can be used individually, or together for a fully fledged front-end application solution.
