@@ -12,13 +12,14 @@ applyTransform(props => {
 
 const App = require('./components/App.js')
 const Home = require('./pages/Home.js')
+const About = require('./pages/About.js')
 
 const app = loll([
   ['/', () => {
     return App(Home('Home'))
   }],
   ['/about', () => {
-    return App(Home('About'))
+    return App(About('About'))
   }],
   ['*', () => {
     return App(Home('404'))
