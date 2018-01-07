@@ -26,8 +26,8 @@ Add state:
 ```javascript
 // MyComponent.js
 module.exports = component({
-  initialState (props) {
-    return {
+  init (props, state) {
+    this.state = {
       count: 0
     }
   },
@@ -44,8 +44,8 @@ Add methods:
 ```javascript
 // MyComponent.js
 module.exports = component({
-  initialState (props) {
-    return {
+  init (props, state) {
+    this.state = {
       count: 0
     }
   },
@@ -76,8 +76,8 @@ Prevent updating. Think `shouldComponentUpdate`. The below will never update:
 ```javascript
 // MyComponent.js
 module.exports = component({
-  initialState (props) {
-    return {
+  init (props, state) {
+    this.state = {
       count: 0
     }
   },
@@ -111,8 +111,8 @@ Async actions and incremental rendering:
 ```javascript
 // MyComponent.js
 module.exports = component({
-  initialState (props) {
-    return {
+  init (props, state) {
+    this.state = {
       loading: false,
       posts: props.posts
     }
