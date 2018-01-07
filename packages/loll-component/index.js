@@ -11,9 +11,7 @@ function merge (one, two) {
 module.exports = function Component (comp) {
   assert.ok(typeof comp === 'object', 'component is not an object')
   assert.ok(typeof comp.render === 'function', 'component.render() must be a function')
-  if (comp.update) {
-    assert.ok(typeof comp.update === 'function', 'component.update() must be a function')
-  }
+  if (comp.update) assert.ok(typeof comp.update === 'function', 'component.update() must be a function')
 
   Object.assign(comp, {
     state: {},
@@ -43,16 +41,18 @@ module.exports = function Component (comp) {
     assert.ok(typeof externalState === 'object', 'external state passed to component must be an object')
 
     if (!comp.ref) {
-      comp.state = Object.assign(
+      comp.init && comp.init(props, externalState)
+
+      comp.state = merge(
         externalState,
-        comp.initialState ? comp.initialState(props) : {}
+        comp.state
       )
 
       comp.ref = comp.render(props, comp.state)
       comp.props = props
     }
 
-    if (!shouldUpdate(props, merge(comp.state, externalState))) {
+    if (!shouldUpdate(props, merge(externalState, comp.state))) {
       return comp.ref
     }
 

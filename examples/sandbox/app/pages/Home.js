@@ -4,8 +4,6 @@ const h = require('@loll/h')
 const MyComponent = require('../components/MyComponent.js')
 
 module.exports = function Home (props) {
-  const content = MyComponent('Hello')
-  console.log(content)
   return h`
     <div>
       <h1 css=${props === 'Home' ? {
@@ -14,7 +12,7 @@ module.exports = function Home (props) {
         color: 'palevioletred'
       }}>${props}</h1>
 
-      ${content}
+      ${MyComponent('Hello')}
     </div>
   `
 }

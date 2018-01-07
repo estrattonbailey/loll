@@ -7,8 +7,8 @@ module.exports = connect(state => ({
   text: state.text
 }))(
   component({
-    initialState (props) {
-      return {
+    init (props) {
+      this.state = {
         title: 'Hello'
       }
     },
