@@ -1,5 +1,9 @@
 const morph = require('nanomorph')
+const onload = require('on-load')
+const KEY_ATTR = onload.KEY_ATTR
 const assert = require('nanoassert')
+
+function noop () {}
 
 function merge (one, two) {
   let o = {}
@@ -8,10 +12,17 @@ function merge (one, two) {
   return o
 }
 
+function isSameId (one, two){
+  return one.getAttribute(KEY_ATTR) === two.getAttribute(KEY_ATTR)
+}
+
 module.exports = function Component (comp) {
   assert.ok(typeof comp === 'object', 'component is not an object')
   assert.ok(typeof comp.render === 'function', 'component.render() must be a function')
   if (comp.update) assert.ok(typeof comp.update === 'function', 'component.update() must be a function')
+
+  let loaded = false
+  let olId
 
   Object.assign(comp, {
     state: {},
@@ -33,13 +44,19 @@ module.exports = function Component (comp) {
     Object.assign(comp.state, state)
 
     return () => {
-      morph(comp.ref, comp.render(comp.props, comp.state))
+      const next = comp.render(comp.props, comp.state)
+      olId && next.setAttribute(KEY_ATTR, olId)
+      morph(comp.ref, next)
     }
   }
 
   return (props, externalState = {}) => {
     assert.ok(typeof externalState === 'object', 'external state passed to component must be an object')
+    console.log(externalState)
 
+    /**
+     * Initial render
+     */
     if (!comp.ref) {
       comp.init && comp.init(props, externalState)
 
@@ -50,6 +67,21 @@ module.exports = function Component (comp) {
 
       comp.ref = comp.render(props, comp.state)
       comp.props = props
+
+      if (comp.mount || comp.unmount) {
+        onload(comp.ref, () => {
+          if (loaded) return
+          loaded = true
+          comp.mount && comp.mount()
+        }, (el) => {
+          if (!loaded) return
+          // comp.ref = null
+          comp.unmount && comp.unmount()
+          loaded = false
+        }, comp)
+
+        olId = comp.ref.getAttribute(KEY_ATTR)
+      }
     }
 
     if (!shouldUpdate(props, merge(externalState, comp.state))) {
