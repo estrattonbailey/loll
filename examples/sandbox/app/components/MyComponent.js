@@ -12,13 +12,6 @@ module.exports = connect(state => ({
         title: 'Hello'
       }
     },
-    mount () {
-      console.log('mounted')
-    },
-    unmount () {
-      console.log('unmounted')
-
-    },
     render (props, state) {
       return h`
         <div>
