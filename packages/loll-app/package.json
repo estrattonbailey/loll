@@ -1,6 +1,6 @@
 {
   "name": "@loll/app",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Hyper-minimal routing and VDOM diffing hub.",
   "source": "index.js",
   "module": "dist/loll-app.es.js",
@@ -39,7 +39,7 @@
     "rollup-plugin-strip": "^1.1.1"
   },
   "dependencies": {
-    "@loll/href": "0.0.1",
+    "@loll/href": "0.0.4",
     "@loll/router": "^0.2.3",
     "mitt": "^1.1.3",
     "picodom": "^2.0.0"
