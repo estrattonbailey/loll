@@ -1,7 +1,5 @@
-const store = require('./store.js')
+import store from './store.js'
 
-module.exports = {
-  updateText (text) {
-    store.setState({ text })
-  }
+export function inc () {
+  store.setState(state => ({ count: state.count + 1 }))
 }

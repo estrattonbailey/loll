@@ -1,7 +1,7 @@
 {
   "name": "@loll/router",
-  "version": "0.1.0",
-  "description": "Library agnostic routing.",
+  "version": "0.2.4",
+  "description": "Library agnostic route handler.",
   "source": "index.js",
   "module": "dist/loll-router.es.js",
   "main": "dist/loll-router.js",
@@ -39,8 +39,6 @@
     "rollup-plugin-strip": "^1.1.1"
   },
   "dependencies": {
-    "mitt": "^1.1.3",
-    "nanohref": "^3.0.1",
-    "nanomorph": "^5.1.3"
+    "@loll/route-parser": "0.0.2"
   }
 }

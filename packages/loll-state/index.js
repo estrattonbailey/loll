@@ -1,8 +1,8 @@
-const mitt = require('mitt')
+import mitt from 'mitt'
 
-module.exports = function createStore (initialState) {
+export default function createStore (initialState) {
   let state = initialState
-  const ev = typeof mitt === 'function' ? mitt() : mitt.default()
+  const ev = mitt()
 
   return Object.assign(ev, {
     getState () {
@@ -16,10 +16,7 @@ module.exports = function createStore (initialState) {
     },
     connect (map) {
       return comp => props => {
-        return comp(
-          props,
-          map(state)
-        )
+        return comp(Object.assign(props, map(state)))
       }
     }
   })

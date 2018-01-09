@@ -32,21 +32,8 @@ function getRoute(path, routes) {
         } else if (route.parts[0] == '*') {
             return route.handler(params);
         }
-        console.log(route);
     }
 }
 
-function createRouter(routesConfig) {
-    var routes = routesConfig.map(function (r) { return createRoute(r[0], r[1]); });
-    return {
-        get: function get(url) {
-            return getRoute(url, routes);
-        },
-        push: function push(url) {
-            window.history.pushState({}, document.title, url);
-        }
-    };
-}
-
-export default createRouter;
-//# sourceMappingURL=loll-router.es.js.map
+export { createRoute, getRoute };
+//# sourceMappingURL=loll-route-parser.es.js.map

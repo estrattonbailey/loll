@@ -1,29 +1,12 @@
-const loll = require('@loll/router')
-const { applyTransform } = require('@loll/h')
-const cxs = require('cxs')
+import loll from '@loll/app'
 
-applyTransform(props => {
-  if (props.css && typeof props.css === 'object') {
-    props.className = [props.className || '', cxs(props.css)].join(' ').replace(/^\s/, '')
-  }
+import App from './components/App.js'
 
-  return props
-})
-
-const App = require('./components/App.js')
-const Home = require('./pages/Home.js')
-const About = require('./pages/About.js')
-
-const app = loll([
+export default loll([
   ['/', () => {
-    return App(Home('Home'))
+    return App('Hello')
   }],
   ['/about', () => {
-    return App(About('About'))
+    return App('About')
   }],
-  ['*', () => {
-    return App(Home('404'))
-  }]
 ])
-
-module.exports = app
