@@ -1,2 +1,2 @@
-var r=require("hyperx"),e=require("hyperscript"),o=[],p=r(function(r,p,u){for(var n=0,t=o;n<t.length;n+=1){p=(0,t[n])(p)}return e(r,p,u)});module.exports=p,module.exports.applyTransform=function(r){o.push(r)};
+function r(r,e){for(var p,n=[],o=[],t=arguments.length;t-- >2;)n.push(arguments[t]);for(;n.length;)if(Array.isArray(p=n.pop()))for(t=p.length;t--;)n.push(p[t]);else null!=p&&!0!==p&&!1!==p&&o.push("number"==typeof p?p+="":p);return"string"==typeof r?{type:r,props:e||{},children:o}:r(e||{},o)}module.exports=r;
 //# sourceMappingURL=loll-h.js.map

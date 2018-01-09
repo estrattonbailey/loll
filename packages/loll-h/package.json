@@ -1,7 +1,7 @@
 {
   "name": "@loll/h",
-  "version": "0.0.1",
-  "description": "Universal component microlibrary.",
+  "version": "0.1.1",
+  "description": "Component builder for @loll/app.",
   "source": "index.js",
   "module": "dist/loll-h.es.js",
   "main": "dist/loll-h.js",
@@ -41,7 +41,6 @@
     "rollup-plugin-strip": "^1.1.1"
   },
   "dependencies": {
-    "hyperscript": "^2.0.2",
-    "hyperx": "^2.3.2"
+    "picodom": "^2.0.0"
   }
 }

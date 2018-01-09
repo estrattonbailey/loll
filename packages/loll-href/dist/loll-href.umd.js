@@ -1,0 +1,2 @@
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):e._loll_href=t()}(this,function(){return function(e){window.addEventListener("click",function(t){if(!(t.ctrlKey||t.metaKey||t.altKey||t.shiftKey||t.defaultPrevented)){for(var n=t.target;n&&(!n.href||"A"!==n.nodeName);)n=n.parentNode;!n||window.location.origin!==n.origin||n.hasAttribute("download")||"_blank"===n.target||/mailto|tel/.test(n.href)||(t.preventDefault(),e(n))}})}});
+//# sourceMappingURL=loll-href.umd.js.map

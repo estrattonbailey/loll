@@ -1,11 +1,11 @@
 {
-  "name": "@loll/state",
-  "version": "0.1.1",
-  "description": "Library agnostic state management.",
+  "name": "@loll/app",
+  "version": "0.0.6",
+  "description": "Hyper-minimal routing and VDOM diffing hub.",
   "source": "index.js",
-  "module": "dist/loll-state.es.js",
-  "main": "dist/loll-state.js",
-  "umd:main": "dist/loll-state.umd.js",
+  "module": "dist/loll-app.es.js",
+  "main": "dist/loll-app.js",
+  "umd:main": "dist/loll-app.umd.js",
   "files": [
     "dist"
   ],
@@ -20,7 +20,7 @@
     "url": "git+ssh://git@github.com/estrattonbailey/loll.git"
   },
   "keywords": [
-    "state"
+    "router"
   ],
   "author": "loll",
   "license": "MIT",
@@ -39,6 +39,9 @@
     "rollup-plugin-strip": "^1.1.1"
   },
   "dependencies": {
-    "mitt": "^1.1.3"
+    "@loll/href": "0.0.1",
+    "@loll/router": "^0.2.3",
+    "mitt": "^1.1.3",
+    "picodom": "^2.0.0"
   }
 }

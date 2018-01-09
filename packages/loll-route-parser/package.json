@@ -1,0 +1,33 @@
+{
+  "name": "@loll/route-parser",
+  "version": "0.0.3",
+  "description": "Simple, tiny, super-fast route parser.",
+  "source": "index.js",
+  "module": "dist/loll-route-parser.es.js",
+  "main": "dist/loll-route-parser.js",
+  "umd:main": "dist/loll-route-parser.umd.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "microbundle build",
+    "watch": "microbundle watch",
+    "publish": "npm publish --access public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/estrattonbailey/loll.git"
+  },
+  "keywords": [
+    "router"
+  ],
+  "author": "loll",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/estrattonbailey/loll/issues"
+  },
+  "homepage": "https://github.com/estrattonbailey/loll#readme",
+  "devDependencies": {
+    "microbundle": "^0.2.4"
+  }
+}

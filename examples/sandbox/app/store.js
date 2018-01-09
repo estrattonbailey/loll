@@ -1,5 +1,5 @@
-const createStore = require('@loll/state')
+import createStore from '@loll/state'
 
-module.exports = createStore({
-  text: 'Initial text state'
+export default createStore({
+  count: 0
 })

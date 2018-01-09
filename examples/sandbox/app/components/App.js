@@ -1,7 +1,9 @@
-const h = require('@loll/h')
+/** @jsx h */
+import h from '@loll/h'
+import Counter from './Counter.js'
 
-module.exports = function App (children) {
-  return h`
+export default function App (children) {
+  return (
     <div>
       <nav>
         <ul>
@@ -10,7 +12,9 @@ module.exports = function App (children) {
         </ul>
       </nav>
 
-      ${children}
+      <Counter />
+
+      {children}
     </div>
-  `
+  )
 }

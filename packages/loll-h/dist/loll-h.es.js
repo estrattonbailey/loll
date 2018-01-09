@@ -1,16 +1,30 @@
-var vdom = require('hyperx');
-var dom = require('hyperscript');
-var transforms = [];
-var h = vdom(function (tag, props, children) {
-    for (var i = 0, list = transforms; i < list.length; i += 1) {
-        var fn = list[i];
+function h$1(type, props) {
+  var node;
+  var stack = [];
+  var children = [];
 
-        props = fn(props);
+  for (var i = arguments.length; i-- > 2; ) {
+    stack.push(arguments[i]);
+  }
+
+  while (stack.length) {
+    if (Array.isArray((node = stack.pop()))) {
+      for (i = node.length; i--; ) {
+        stack.push(node[i]);
+      }
+    } else if (node != null && node !== true && node !== false) {
+      children.push(typeof node === "number" ? (node = node + "") : node);
     }
-    return dom(tag, props, children);
-});
-module.exports = h;
-module.exports.applyTransform = (function (fn) {
-    transforms.push(fn);
-});
+  }
+
+  return typeof type === "string"
+    ? {
+        type: type,
+        props: props || {},
+        children: children
+      }
+    : type(props || {}, children)
+}
+
+export default h$1;
 //# sourceMappingURL=loll-h.es.js.map
