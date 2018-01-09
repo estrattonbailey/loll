@@ -1,71 +1,66 @@
-const morph = require('nanomorph')
-const assert = require('nanoassert')
+import { patch } from 'picodom'
 
-function merge (one, two) {
-  let o = {}
-  for (let key in one) o[key] = one[key]
-  for (let key in two) o[key] = two[key]
-  return o
+class Component {
+  constructor (config) {
+    Object.assign(this, config)
+
+    if (!this.state) {
+      this.state = {}
+    }
+
+    this._proxy = document.createElement('div')
+  }
+
+  setState (fn) {
+    Object.assign(
+      this.state,
+      typeof fn === 'function' ? fn(this.state) : fn
+    )
+
+    this._render()
+  }
+
+  _render () {
+    this._proxy.appendChild(this.ref.cloneNode(true))
+    patch(this._proxy, this._self, (this._self = this.render(this.props, this.state)))
+    const next = this._proxy.childNodes[0]
+    this.ref.parentNode.replaceChild(next, this.ref)
+    this.ref = next
+  }
 }
 
-module.exports = function Component (comp) {
-  assert.ok(typeof comp === 'object', 'component is not an object')
-  assert.ok(typeof comp.render === 'function', 'component.render() must be a function')
-  if (comp.update) assert.ok(typeof comp.update === 'function', 'component.update() must be a function')
+export default function component (config) {
+  const comp = new Component(config)
+  const initialState = comp.state || {}
 
-  Object.assign(comp, {
-    state: {},
-    ref: null,
-    setState
-  })
-
-  function shouldUpdate (props, state) {
-    return !comp.update || comp.update(props, state)
-  }
-
-  function setState (fn) {
-    if (!shouldUpdate(comp.props, comp.state)) return () => {}
-
-    const state = typeof fn === 'function' ? fn(comp.state) : fn
-
-    assert.ok(typeof state === 'object', 'setState received a value that was not an object')
-
-    Object.assign(comp.state, state)
-
-    return () => {
-      morph(comp.ref, comp.render(comp.props, comp.state))
-    }
-  }
-
-  return (props, externalState = {}) => {
-    assert.ok(typeof externalState === 'object', 'external state passed to component must be an object')
-
-    if (!comp.ref) {
-      comp.init && comp.init(props, externalState)
-
-      comp.state = merge(
-        externalState,
-        comp.state
-      )
-
-      comp.ref = comp.render(props, comp.state)
+  return function wrappedComponent (props) {
+    if (!comp._self) {
       comp.props = props
+      comp.init(props)
+      comp._self = comp.render(comp.props, comp.state)
+      Object.assign(comp._self.props, {
+        oncreate (el) {
+          comp.ref = el
+          comp.mount && comp.mount()
+        },
+        ondestroy () {
+          comp.state = initialState
+          comp.ref = null
+          comp.unmount && comp.unmount()
+        }
+      })
     }
 
-    if (!shouldUpdate(props, merge(externalState, comp.state))) {
-      return comp.ref
-    }
+    for (let key in props) {
+      if (props[key] !== comp.props[key]) {
+        comp.props = props
 
-    const newState = externalState
-    comp.props = props
-
-    for (let key in newState) {
-      if (comp.state[key] !== newState[key]) {
-        comp.setState(newState)()
-        break
+        if (!comp.update || comp.update(props, comp.state)) {
+          comp._render()
+        }
       }
     }
 
-    return comp.ref
+    return comp._self
   }
 }

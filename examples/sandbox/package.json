@@ -35,7 +35,7 @@
     "webpack-dev-server": "^2.10.0"
   },
   "dependencies": {
-    "@loll/app": "0.0.4",
+    "@loll/app": "0.0.7",
     "@loll/component": "0.0.1",
     "@loll/h": "^0.1.0",
     "@loll/state": "^0.1.0",

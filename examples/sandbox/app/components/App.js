@@ -1,8 +1,9 @@
 /** @jsx h */
 import h from '@loll/h'
 import Counter from './Counter.js'
+import ContainedCounter from './ContainedCounter.js'
 
-export default function App (children) {
+export default function App (props, children) {
   return (
     <div>
       <nav>
@@ -12,9 +13,8 @@ export default function App (children) {
         </ul>
       </nav>
 
-      <Counter />
-
       {children}
     </div>
   )
 }
+

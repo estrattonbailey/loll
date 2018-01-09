@@ -1,18 +1,15 @@
-const h = require('@loll/h')
-// const Text = require('../components/Text.js')
-// const Updater = require('../components/Updater.js')
-const MyComponent = require('../components/MyComponent.js')
+/** @jsx h */
+import h from '@loll/h'
+import Counter from '../components/Counter.js'
+import ContainedCounter from '../components/ContainedCounter.js'
 
-module.exports = function Home (props) {
-  return h`
+export default function Home (props) {
+  console.log(props)
+  return (
     <div>
-      <h1 css=${props === 'Home' ? {
-        color: 'tomato'
-      } : {
-        color: 'palevioletred'
-      }}>${props}</h1>
-
-      ${MyComponent('Hello')}
+      <h1>{props.title}</h1>
+      <Counter />
+      <ContainedCounter />
     </div>
-  `
+  )
 }

@@ -1,13 +1,10 @@
-const h = require('@loll/h')
+/** @jsx h */
+import h from '@loll/h'
 
-module.exports = function Home (props) {
-  return h`
+export default function Home (props) {
+  return (
     <div>
-      <h1 css=${props === 'Home' ? {
-        color: 'tomato'
-      } : {
-        color: 'palevioletred'
-      }}>${props}</h1>
+      <h1>{props.title}</h1>
     </div>
-  `
+  )
 }
