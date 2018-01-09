@@ -1,6 +1,6 @@
 {
   "name": "@loll/href",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Tiny click handler library.",
   "source": "index.js",
   "module": "dist/loll-href.es.js",
