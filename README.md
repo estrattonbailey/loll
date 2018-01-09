@@ -5,7 +5,8 @@ A fun(ctional) little frontend application framework.
 1. Async routing, useful for data fetching
 2. Fast VDOM-diffing via [picodom](https://github.com/picodom/picodom)
 3. Easy global state management
-2. Tiny: 3.32kb gzipped *with dependencies*
+4. Localized stateful components
+5. Tiny: 2.2kb gzipped *with dependencies*
 
 ## Usage
 The libraries herein can be used individually, or together for a fully fledged front-end application solution.
