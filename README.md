@@ -1,5 +1,5 @@
 ## loll 🤣
-A fun(ctional) little frontend application framework.
+A fun(ctional) little frontend application framework. **This is not production-ready.** It's fun-ready.
 
 ## Features:
 1. Async routing, useful for data fetching
