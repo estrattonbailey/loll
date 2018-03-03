@@ -1,4 +1,4 @@
-import { patch } from 'picodom'
+import { patch } from 'ultradom'
 
 class Component {
   constructor (config) {
@@ -21,11 +21,8 @@ class Component {
   }
 
   _render () {
-    this._proxy.appendChild(this.ref.cloneNode(true))
-    patch(this._proxy, this._self, (this._self = this.render(this.props, this.state)))
-    const next = this._proxy.childNodes[0]
-    this.ref.parentNode.replaceChild(next, this.ref)
-    this.ref = next
+    this._proxy = patch(this.render(this.props, this.state), this._proxy)
+    this.ref = this._proxy
   }
 }
 
@@ -40,7 +37,6 @@ export default function component (config) {
       comp._self = comp.render(comp.props, comp.state)
       Object.assign(comp._self.props, {
         oncreate (el) {
-          comp.ref = el
           comp.mount && comp.mount()
         },
         ondestroy () {
@@ -53,7 +49,7 @@ export default function component (config) {
 
     for (let key in props) {
       if (props[key] !== comp.props[key]) {
-        comp.props = props
+        comp.props[key] = props[key]
 
         if (!comp.update || comp.update(props, comp.state)) {
           comp._render()
