@@ -1,4 +1,4 @@
-import { patch } from 'picodom'
+import { patch } from 'ultradom'
 import mitt from 'mitt'
 import href from '@loll/href'
 import createRouter from '@loll/router'
@@ -8,17 +8,17 @@ function currentURL (loc = window.location) {
 }
 
 module.exports = function loll (r = []) {
-  let ref = null
   const router = createRouter(r)
 
   function mount (root, done) {
+    let element = root.firstElementChild
     const ev = mitt.default ? mitt.default() : mitt()
 
     function render (url = currentURL()) {
       ev.emit('navigate', url)
       return Promise.resolve(router.get(url))
         .then(next => requestAnimationFrame(() => {
-          patch(root, ref, (ref = next))
+          element = element ? patch(next, element) : root.appendChild(patch(next))
           ev.emit('render')
         }))
         .then(() => router.push(url))

@@ -41,6 +41,6 @@
     "rollup-plugin-strip": "^1.1.1"
   },
   "dependencies": {
-    "picodom": "^2.0.0"
+    "ultradom": "^2.0.0"
   }
 }

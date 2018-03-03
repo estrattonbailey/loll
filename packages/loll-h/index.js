@@ -1,3 +1,3 @@
-import { h } from 'picodom'
+import { createNode as h } from 'ultradom'
 
 export default h

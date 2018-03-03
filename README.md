@@ -3,7 +3,7 @@ A fun(ctional) little frontend application framework. **This is not production-r
 
 ## Features:
 1. Async routing, useful for data fetching
-2. Fast VDOM-diffing via [picodom](https://github.com/picodom/picodom)
+2. Fast VDOM-diffing via [Ultradom](https://github.com/jorgebucaran/ultradom)
 3. Easy global state management
 4. Localized stateful components
 5. Tiny: 2.2kb gzipped *with dependencies*

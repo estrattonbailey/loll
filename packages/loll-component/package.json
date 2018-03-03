@@ -42,6 +42,6 @@
   },
   "dependencies": {
     "@loll/h": "^0.1.1",
-    "picodom": "^2.0.0"
+    "ultradom": "^2.0.0"
   }
 }
